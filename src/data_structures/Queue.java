@@ -86,4 +86,20 @@ public class Queue
 	{
 		return nItems;
 	}
+	
+	/**
+	 * Create a copy of the Queue.
+	 * @return copy of this Queue.
+	 */
+	public Queue copy()
+	{
+		Queue newQueue = new Queue(maxSize);
+		
+		for(Object item : queArray)
+		{
+			newQueue.insert(item);
+		}
+		
+		return newQueue;
+	}
 }

@@ -1,13 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-
 import data_structures.Queue;
-import data_structures.States;
 
 /*
  * Zachary Hayes
@@ -16,125 +10,54 @@ import data_structures.States;
  */
 public class DecisionMaker
 {
-	private String jsonURL = "data//" + "testDataSet.json";
-	private int maxNumOfJsonObjects = 150000;
+	private Preferences userPreferences;
 	private Queue allRestaurants;
-	private String[] statesServiced;	// List of states this app services.
-	private String[] categories;
-	private JsonParser parser = new JsonParser();
-	private States states = new States();
 	
-	public DecisionMaker() throws FileNotFoundException, IOException, ParseException
+	public DecisionMaker(Preferences userPreferences) throws FileNotFoundException, IOException, ParseException
 	{
-		allRestaurants = parser.parse(jsonURL,  maxNumOfJsonObjects);		// Parse Json dataset.
-		statesServiced = new String[states.getStateCodeToNameMap().size()];
-		createListOfStatesServiced();
-		//createListOfCategories();
+		this.userPreferences = userPreferences;
+		allRestaurants = new RestaurantController("restaurant_dataset.json").getRestaurantQueue();
+
 	}
 	
-	/**
-	 * Make list of states in restaurant dataset.
-	 */
-	private void createListOfStatesServiced()
+	public void decide()
 	{
-		statesServiced = createList("state");
-	}
-	
-	private void createListOfCategories()
-	{
-		categories = createList("categories");
-	}
-	
-	/**
-	 * Create a list of properties from Json dataset.
-	 * @param propertyName
-	 * @return
-	 */
-	private String[] createList(String propertyName)
-	{
-		Queue tempAllRestaurants = allRestaurants;
-		String[] arrayList = new String[maxNumOfJsonObjects]; 		// New list
-		int itemsInList = -1;
+		Queue tempRestaurants = allRestaurants.copy();
 		
-		while(!tempAllRestaurants.isEmpty())
+		while(!allRestaurants.isEmpty())
 		{
-			// Remove next item in queue.
-			JSONObject currentObject = (JSONObject) tempAllRestaurants.remove();
-			String currentProperty = (String) currentObject.get(propertyName);	// Get property.
+			Restaurant currentRestaurant = (Restaurant) tempRestaurants.remove();
 			
-			// Check if property already in list.
-			if(!hasDuplicate(currentProperty, arrayList))
+			if(meetsManditoryPreferences(currentRestaurant))
 			{
-				arrayList[++itemsInList] = currentProperty;		// Add to List.
+				int score = scoreRestaurant(currentRestaurant);
+			}
+		}
+	}
+	
+	private boolean meetsManditoryPreferences(Restaurant restaurant)
+	{
+		return restaurant.getState() == userPreferences.getState() && restaurant.isOpen()
+				&& restaurant.isTakeOut() == userPreferences.wantsTakeOut();
+	}
+	
+	private int scoreRestaurant(Restaurant restaurant)
+	{
+		int score = 0;
+		
+		if(restaurant.getCity() == userPreferences.getCity())
+		{
+			score += 5;
+		}
+		
+		for(String category : userPreferences.getCategories())
+		{
+			if(restaurant.getCategories().contains(category))
+			{
+				score++;
 			}
 		}
 		
-		// Refine array so no null values.
-		arrayList = (String[]) refineArray(arrayList, itemsInList);
-		
-		return arrayList;
-	}
-	
-	/**
-	 * Checks list for duplicate item.
-	 * @param newItem Item to check against items in list.
-	 * @param list List of items.
-	 * @return True if duplicate found.
-	 */
-	private boolean hasDuplicate(String newItem, String[] list)
-	{
-		// Traverse items currently in list.
-		for(String item : list)
-		{
-			// Check if newItem is duplicate of current item.
-			if(item != null && item.equals(newItem))
-			{
-				return true;	// Returns true when duplicate found.
-			}
-		}
-		return false;			// No duplicate found.
-	}
-	
-	/**
-	 * Refines an array to a given length.
-	 * @param arrayToRefine Array that is too large.
-	 * @param newLength Length of refined array.
-	 * @return Refined array.
-	 */
-	private String[] refineArray(String[] arrayToRefine, int newLength)
-	{
-		String[] newArray = new String[newLength];
-		int i = 0;
-		
-		// Move items into new array.
-		for(String entity : arrayToRefine)
-		{
-			if(entity != null && i < newLength)
-			{
-				newArray[i++] = entity;
-			}
-		}
-		
-		return newArray;
-	}
-	
-	/**
-	 * Print list of states in dataset to console.
-	 */
-	public void printListOfStatesServiced()
-	{
-		for(String state : statesServiced)
-		{
-			System.out.print(state + " ");
-			System.out.println(states.getStateCodeToNameMap().get(state));
-		}	
-	}
-	
-	public void printListOfCategories()
-	{
-		for(String category : categories)
-		{
-			System.out.print(category);
-		}
+		return score;
 	}
 }

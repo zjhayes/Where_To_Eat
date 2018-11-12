@@ -8,9 +8,8 @@ public class EntryPoint
 
 	public static void main(String[] args) throws Exception
 	{
-		DecisionMaker decider = new DecisionMaker();
-		decider.printListOfStatesServiced();
-		//decider.printListOfCategories();
+		Preferences userPreferences = new Preferences();
+		DecisionMaker decider = new DecisionMaker(userPreferences);
 	}
 
 }

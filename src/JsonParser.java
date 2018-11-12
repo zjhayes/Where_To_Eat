@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import data_structures.Queue;
+import interfaces.IJsonHandler;
 
 /*
  * Zachary Hayes
@@ -17,13 +18,13 @@ public class JsonParser
 {
 	/**
 	 * Parse Json dataset to Queue of Json Objects.
+	 * @param jsonController 
 	 * @param jsonFile Json file location.
 	 * @param maxNumOfJsonObjects Max number of Json objects to expect.
-	 * @return Queue containing parsed Json objects.
 	 */
-	public Queue parse(String jsonFile, int maxNumOfJsonObjects) throws FileNotFoundException, IOException, ParseException
+	public void parse(IJsonHandler jsonController, String jsonFile, int maxNumOfJsonObjects) throws FileNotFoundException, IOException, ParseException
 	{
-		Queue jsonCollection = new Queue(maxNumOfJsonObjects);
+		//Queue jsonCollection = new Queue(maxNumOfJsonObjects);
 		
 		try(BufferedReader br = new BufferedReader(new FileReader(jsonFile)))
 		{
@@ -36,11 +37,15 @@ public class JsonParser
 				// Typecast to JSONObject.
 				JSONObject currentJson = (JSONObject) tempObj;
 				
+				/*
 				// Insert object into object queue.
-				jsonCollection.insert(currentJson);
+				jsonCollection.insert(currentJson);*/
+				
+				// Do something with the Json Object.
+				jsonController.handleJson(currentJson);
 			}
 			
-			return jsonCollection;
+			//return jsonCollection;
 		}
 	}
 }
