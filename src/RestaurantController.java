@@ -15,11 +15,10 @@ import interfaces.IJsonHandler;
  */
 public class RestaurantController
 {
-	private String jsonURL;				// Location of Json dataset.
-	private int maxNumOfJsonObjects;	// Total number of restaurants in dataset.
-	private Queue allRestaurants;		// All restaurants in dataset.
+	private String jsonURL;							// Location of Json dataset.
+	private int maxNumOfJsonObjects;				// Total number of restaurants in dataset.
 	private JsonParser parser = new JsonParser();
-	private Queue restaurantQueue;	// Queue of Restaurant objects.
+	RestaurantJsonHandler restaurantHandler;
 	
 	/**
 	 * The RestaurantController handles creating and modifying Restaurant objects.
@@ -29,37 +28,9 @@ public class RestaurantController
 	{
 		jsonURL = "data//" + jsonFile;
 		maxNumOfJsonObjects = countDataObjects();		// Set to number of Json objects in file.
-		RestaurantJsonHandler restaurantHandler = new RestaurantJsonHandler();
+		restaurantHandler = new RestaurantJsonHandler(maxNumOfJsonObjects);
 		parser.parse(restaurantHandler, jsonURL,  maxNumOfJsonObjects);		// Parse Json dataset.
-		allRestaurants = restaurantHandler.getRestaurantQueue();
-		//createRestaurantQueue();
 	}
-	
-	/**
-	 * Create Queue of restaurants objects in user's state.
-	 * @param userPreferences
-	 */
-	/*private void createRestaurantQueue()
-	{
-		Queue tempAllRestaurants = allRestaurants.copy();
-		restaurantQueue = new Queue(tempAllRestaurants.size());
-		
-		// Create Restaurant objects from Json objects in dataset.
-		while(!tempAllRestaurants.isEmpty())
-		{
-			JSONObject currentRestaurant = (JSONObject) tempAllRestaurants.remove();
-			
-			Restaurant newRestaurantObject = new Restaurant();
-			newRestaurantObject.setName((String) currentRestaurant.get("name"));
-			newRestaurantObject.setCity((String) currentRestaurant.get("city"));
-			newRestaurantObject.setState((String) currentRestaurant.get("state"));
-			newRestaurantObject.setPostalCode((long) currentRestaurant.get("postal code"));
-			newRestaurantObject.setStarRating((float) currentRestaurant.get("stars"));
-			newRestaurantObject.setCategories((Array) currentRestaurant.get("categories"));
-				
-			restaurantQueue.insert(newRestaurantObject);	// Insert into Restaurant queue.
-		}
-	}*/
 	
 	/**
 	 * Get queue of Restaurant objects.
@@ -67,7 +38,7 @@ public class RestaurantController
 	 */
 	public Queue getRestaurantQueue()
 	{
-		return restaurantQueue;
+		return restaurantHandler.getRestaurantQueue();
 	}
 	
 	/**
@@ -78,11 +49,12 @@ public class RestaurantController
 	{
 		int numOfDataObjects = 0;
 		
+		// Traverse dataset and count lines, each line is assumed to be a Json object.
 		try(BufferedReader br = new BufferedReader(new FileReader(jsonURL)))
 		{
 			for(String line; (line = br.readLine()) != null; )
 			{
-				numOfDataObjects++;
+				numOfDataObjects++;	// Iterate count.
 			}
 		}
 		

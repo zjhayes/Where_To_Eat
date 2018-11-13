@@ -9,18 +9,16 @@ import org.joda.time.DateTime;
 public class Restaurant
 {
 	private String name;
-	private int score;		// How well this restaurant matches user preferences.
 	private String city;
 	private String state;
-	private long postalCode;
-	private float starRating;
+	private double starRating;
 	private boolean isTakeOut;
-	private Array categories;
+	private String[] categories;
 	private String hours;
 	
 	public boolean isOpen()
 	{
-		return false;
+		return true;
 	}
 
 	public String getName()
@@ -53,24 +51,14 @@ public class Restaurant
 		this.state = state;
 	}
 
-	public long getPostalCode()
-	{
-		return postalCode;
-	}
-
-	public void setPostalCode(long postalCode)
-	{
-		this.postalCode = postalCode;
-	}
-
-	public float getStarRating()
+	public double getStarRating()
 	{
 		return starRating;
 	}
 
-	public void setStarRating(float starRating)
+	public void setStarRating(double d)
 	{
-		this.starRating = starRating;
+		this.starRating = d;
 	}
 
 	public boolean isTakeOut()
@@ -83,12 +71,12 @@ public class Restaurant
 		this.isTakeOut = isTakeOut;
 	}
 
-	public Array getCategories()
+	public String[] getCategories()
 	{
 		return categories;
 	}
 
-	public void setCategories(Array categories)
+	public void setCategories(String[] categories)
 	{
 		this.categories = categories;
 	}

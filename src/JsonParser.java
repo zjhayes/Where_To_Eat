@@ -23,9 +23,7 @@ public class JsonParser
 	 * @param maxNumOfJsonObjects Max number of Json objects to expect.
 	 */
 	public void parse(IJsonHandler jsonController, String jsonFile, int maxNumOfJsonObjects) throws FileNotFoundException, IOException, ParseException
-	{
-		//Queue jsonCollection = new Queue(maxNumOfJsonObjects);
-		
+	{		
 		try(BufferedReader br = new BufferedReader(new FileReader(jsonFile)))
 		{
 			// Iterate through json object file.
@@ -37,15 +35,9 @@ public class JsonParser
 				// Typecast to JSONObject.
 				JSONObject currentJson = (JSONObject) tempObj;
 				
-				/*
-				// Insert object into object queue.
-				jsonCollection.insert(currentJson);*/
-				
 				// Do something with the Json Object.
 				jsonController.handleJson(currentJson);
 			}
-			
-			//return jsonCollection;
 		}
 	}
 }
