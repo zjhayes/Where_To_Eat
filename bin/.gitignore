@@ -1,13 +1,2 @@
-/DatasetCleaner.class
-/DecisionMaker.class
-/EntryPoint.class
-/JsonParser.class
-/Preferences.class
-/Restaurant.class
+/AttributesJsonHandler.class
 /data_structures/
-/DataHandler.class
-/RestaurantController.class
-/assists/
-/IJsonController.class
-/interfaces/
-/RestaurantJsonHandler.class

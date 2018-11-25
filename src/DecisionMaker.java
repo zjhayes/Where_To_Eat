@@ -52,11 +52,21 @@ public class DecisionMaker
 	private boolean meetsManditoryPreferences(Restaurant restaurant)
 	{
 		// Check if restaurant is in user's preferred state..
-		// If user wants take out, must be take out..
-		// If user doesn't want take out, doesn't matter.
 		return restaurant.getState().equals(userPreferences.getState()) && restaurant.isOpen()
-				&& (restaurant.isTakeOut() == userPreferences.wantsTakeOut() ||
-				userPreferences.wantsTakeOut() == false);
+				&& meetsDiningPreference(restaurant); // Checks if restaurant provides user's preferred dining option.
+	}
+	
+	/**
+	 * Checks if restaurant has user's dining preferences.
+	 * All restaurants are assumed to have dine-in option.
+	 * @param restaurant
+	 * @return true if restaurant provides requested dining preference.
+	 */
+	private boolean meetsDiningPreference(Restaurant restaurant)
+	{
+		return (restaurant.hasTakeOut() == true && userPreferences.wantsTakeOut() == true) ||
+				(restaurant.hasDelivery() == true && userPreferences.wantsDelivery() == true) ||
+				userPreferences.wantsDineIn();
 	}
 	
 	/**

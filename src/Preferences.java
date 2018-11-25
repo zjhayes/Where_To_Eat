@@ -8,7 +8,10 @@ public class Preferences
 	private String city;
 	private String state;
 	private String[] categories;
+	private boolean wantsDineIn;
 	private boolean wantsTakeOut;
+	private boolean wantsDelivery;
+	
 	
 	public String getState()
 	{
@@ -34,6 +37,14 @@ public class Preferences
 	{
 		this.city = city;
 	}
+	public boolean wantsDineIn()
+	{
+		return wantsDineIn;
+	}
+	public void setWantsDineIn(boolean wantsDineIn)
+	{
+		this.wantsDineIn = wantsDineIn;
+	}
 	public boolean wantsTakeOut()
 	{
 		return wantsTakeOut;
@@ -41,6 +52,14 @@ public class Preferences
 	public void setWantsTakeOut(boolean wantsTakeOut)
 	{
 		this.wantsTakeOut = wantsTakeOut;
+	}
+	public boolean wantsDelivery()
+	{
+		return wantsDelivery;
+	}
+	public void setWantsDelivery(boolean wantsDelivery)
+	{
+		this.wantsDelivery = wantsDelivery;
 	}
 	
 }

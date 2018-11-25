@@ -1,4 +1,6 @@
 import java.lang.reflect.Array;
+import java.util.Map;
+
 import org.json.simple.JSONObject;
 import data_structures.Queue;
 import interfaces.IJsonHandler;
@@ -28,7 +30,32 @@ public class RestaurantJsonHandler implements IJsonHandler
 		String categoryStringList = (String) currentRestaurant.get("categories");
 		newRestaurantObject.setCategories(parseStringToArray(categoryStringList));
 		
+		// Add attributes.
+		Map<String, String> attributes = (Map<String, String>) currentRestaurant.get("attributes");
+		newRestaurantObject.setTakeOut(Boolean.parseBoolean(getAttribute(attributes, "RestaurantsTakeOut")));
+		newRestaurantObject.setDelivery(Boolean.parseBoolean(getAttribute(attributes, "RestaurantsDelivery")));
+		
+		// Add business hours.
+		Map<String, String> hours = (Map<String, String>) currentRestaurant.get("hours");
+		newRestaurantObject.setHours(hours);
+		
 		restaurantQueue.insert(newRestaurantObject);	// Insert into Restaurant queue.
+	}
+	
+	/**
+	 * Get attribute with given key from attribute map.
+	 * @param attributes Map of attributes.
+	 * @param attribute name of desired attribute.
+	 * @return value of attribute.
+	 */
+	private String getAttribute(Map<String, String> attributes, String attribute)
+	{
+		if(attributes != null && attributes.containsKey(attribute))
+		{
+			return attributes.get(attribute);
+		}
+		
+		return "";
 	}
 	
 	/**

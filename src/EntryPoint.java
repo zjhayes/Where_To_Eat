@@ -10,8 +10,11 @@ public class EntryPoint
 	{
 		Preferences userPreferences = new Preferences();
 		userPreferences.setState("AZ");
-		String[] categories = {"Pizza", "Middle Eastern", "Fast Food", "Mexican"};
+		String[] categories = {"Pizza", "Middle Eastern", "Fast Food", "Mexican", "Sandwiches", "Seafood", "Chicken Wings"};
 		userPreferences.setCategories(categories);
+		userPreferences.setWantsTakeOut(true);
+		userPreferences.setWantsDelivery(true);
+		userPreferences.setWantsDineIn(true);
 		DecisionMaker decider = new DecisionMaker(userPreferences);
 		decider.decide();
 		decider.printTopTen();
