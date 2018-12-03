@@ -3,7 +3,6 @@ Burgers
 Street Vendors
 Barbeque
 Food Trucks
-Food
 Mexican
 Sandwiches
 American (Traditional)

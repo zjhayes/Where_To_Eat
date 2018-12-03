@@ -1,3 +1,4 @@
+package tests;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
@@ -9,12 +10,12 @@ import program.Preferences;
  * CIS152 Data Structures and Algorithms
  * Final Project - Where To Eat
  */
-public class EntryPoint
+public class TestEntryPoint
 {	
 	public static void main(String[] args) throws Exception
 	{
+		System.out.println("Running test.");
 		runDecisionMaker();
-		AppGui appGui = new AppGui();
 	}
 	
 	private static void runDecisionMaker() throws FileNotFoundException, IOException, ParseException

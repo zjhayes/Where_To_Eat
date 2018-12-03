@@ -23,7 +23,7 @@ public class ResultsWindow
 	{
 		this.decider = decider;
 		initialize();
-		launch();
+		//launch();
 	}
 
 	/**
@@ -31,6 +31,7 @@ public class ResultsWindow
 	 */
 	public ResultsWindow()
 	{
+		System.out.println(decider);
 		initialize();
 	}
 	
@@ -67,11 +68,11 @@ public class ResultsWindow
 		frmWhereToEat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmWhereToEat.getContentPane().setLayout(null);
 		
-		JLabel lblRestaurantName = new JLabel("Restaurant Name");
-		//lblRestaurantName.setText(decider.getNextDecision());
+		JLabel lblRestaurantName = new JLabel("");
+		lblRestaurantName.setText(decider.getNextDecision());
 		lblRestaurantName.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRestaurantName.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblRestaurantName.setBounds(101, 56, 200, 50);
+		lblRestaurantName.setBounds(50, 56, 300, 50);
 		frmWhereToEat.getContentPane().add(lblRestaurantName);
 		
 		JLabel lblEatHere = new JLabel("EAT HERE...");
@@ -88,6 +89,8 @@ public class ResultsWindow
 		});
 		btnPickAnother.setBounds(142, 158, 124, 50);
 		frmWhereToEat.getContentPane().add(btnPickAnother);
+		
+		frmWhereToEat.setVisible(true);
 	}
 
 }

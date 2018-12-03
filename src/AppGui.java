@@ -161,7 +161,6 @@ public class AppGui
 		{
 			decider = new DecisionMaker();
 			decider.decide(userPreferences);
-			decider.printTopTen();
 			ResultsWindow results = new ResultsWindow(decider);
 		} catch (IOException | ParseException e)
 		{
