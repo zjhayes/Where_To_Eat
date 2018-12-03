@@ -1,12 +1,23 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import org.json.simple.parser.ParseException;
+import program.DecisionMaker;
+import program.Preferences;
+
 /*
  * Zachary Hayes
  * CIS152 Data Structures and Algorithms
  * Final Project - Where To Eat
  */
 public class EntryPoint
-{
-
+{	
 	public static void main(String[] args) throws Exception
+	{
+		runDecisionMaker();
+		AppGui appGui = new AppGui();
+	}
+	
+	private static void runDecisionMaker() throws FileNotFoundException, IOException, ParseException
 	{
 		Preferences userPreferences = new Preferences();
 		userPreferences.setState("AZ");
@@ -15,9 +26,8 @@ public class EntryPoint
 		userPreferences.setWantsTakeOut(true);
 		userPreferences.setWantsDelivery(true);
 		userPreferences.setWantsDineIn(true);
-		DecisionMaker decider = new DecisionMaker(userPreferences);
-		decider.decide();
+		DecisionMaker decider = new DecisionMaker();
+		decider.decide(userPreferences);
 		decider.printTopTen();
 	}
-
 }

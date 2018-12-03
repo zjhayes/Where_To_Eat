@@ -1,3 +1,4 @@
+package program;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -17,17 +18,17 @@ public class DecisionMaker
 	private Queue allRestaurants;
 	private LinkedList decisionList;
 	
-	public DecisionMaker(Preferences userPreferences) throws FileNotFoundException, IOException, ParseException
+	public DecisionMaker() throws FileNotFoundException, IOException, ParseException
 	{
-		this.userPreferences = userPreferences;
 		allRestaurants = new RestaurantController("restaurant_dataset.json").getRestaurantQueue();
 	}
 	
 	/**
 	 * Create sorted linked list of best restaurant matches.
 	 */
-	public void decide()
+	public void decide(Preferences userPreferences)
 	{
+		this.userPreferences = userPreferences;
 		Queue tempRestaurants = allRestaurants.copy();
 		decisionList = new LinkedList();
 
@@ -84,6 +85,9 @@ public class DecisionMaker
 			score += 5;
 		}
 		
+		// Add points for higher ratings.
+		score += Math.round(restaurant.getStarRating());
+		
 		// Each category matched is worth 1 points.
 		for(String category : userPreferences.getCategories())
 		{
@@ -96,6 +100,23 @@ public class DecisionMaker
 		return score;
 	}
 	
+	public String getNextDecision()
+	{
+		if(!decisionList.isEmpty())
+		{	
+			Link decision = decisionList.deleteFirst();
+			Restaurant restaurant = (Restaurant) decision.getObject();
+			return restaurant.getName();
+		}
+		else
+		{
+			return "No more restaurants match your preferences.";
+		}
+	}
+	
+	/**
+	 * For testing.
+	 */
 	public void printTopTen()
 	{
 		int countDown = 10;
