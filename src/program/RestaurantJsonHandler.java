@@ -1,7 +1,6 @@
 package program;
-import java.lang.reflect.Array;
-import java.util.Map;
 
+import java.util.Map;
 import org.json.simple.JSONObject;
 import data_structures.Queue;
 import interfaces.IJsonHandler;
