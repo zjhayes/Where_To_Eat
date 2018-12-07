@@ -24,8 +24,8 @@ public class TestEntryPoint
 		userPreferences.setState("AZ");
 		String[] categories = {"Pizza", "Middle Eastern", "Fast Food", "Mexican", "Sandwiches", "Seafood", "Chicken Wings"};
 		userPreferences.setCategories(categories);
-		userPreferences.setWantsTakeOut(true);
-		userPreferences.setWantsDelivery(true);
+		userPreferences.setWantsTakeOut(false);
+		userPreferences.setWantsDelivery(false);
 		userPreferences.setWantsDineIn(true);
 		DecisionMaker decider = new DecisionMaker();
 		decider.decide(userPreferences);

@@ -1,6 +1,7 @@
 package program;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import org.json.simple.parser.ParseException;
 import data_structures.Link;
@@ -17,6 +18,7 @@ public class DecisionMaker
 	private Preferences userPreferences;
 	private Queue allRestaurants;
 	private LinkedList decisionList;
+	private ArrayList<String> pastDecisions;
 	
 	public DecisionMaker() throws FileNotFoundException, IOException, ParseException
 	{
@@ -31,6 +33,7 @@ public class DecisionMaker
 		this.userPreferences = userPreferences;
 		Queue tempRestaurants = allRestaurants.copy();
 		decisionList = new LinkedList();
+		pastDecisions = new ArrayList<String>();
 
 		// Check all restaurants, add matches to linked list.
 		while(!tempRestaurants.isEmpty())
@@ -93,24 +96,49 @@ public class DecisionMaker
 		{
 			if(Arrays.asList(restaurant.getCategories()).contains(category))
 			{
-				score++;
+				score += 5;
 			}
 		}
 		
 		return score;
 	}
 	
+	/**
+	 * Get next restaurant from decision list, skips duplicates.
+	 * @return name of next restaurant.
+	 */
 	public String getNextDecision()
 	{
 		if(!decisionList.isEmpty())
 		{	
 			Link decision = decisionList.deleteFirst();
 			Restaurant restaurant = (Restaurant) decision.getObject();
-			return restaurant.getName();
+			String restaurantName = restaurant.getName();
+			
+			return skipDuplicates(restaurantName);
 		}
 		else
 		{
-			return "No more restaurants match your preferences.";
+			return "No Results Found";
+		}
+	}
+	
+	/**
+	 * Checks if restaurant has been suggested, if so skip to next restaurant.
+	 * @param restaurantName String name of restaurant.
+	 * @return string of restaurant that isn't a duplicate.
+	 */
+	private String skipDuplicates(String restaurantName)
+	{
+		// Check if restaurant has already been suggested.
+		if(!pastDecisions.contains(restaurantName))
+		{
+			pastDecisions.add(restaurantName);
+			return restaurantName;
+		}
+		else
+		{
+			return getNextDecision(); 	// Skip and get next decision.
 		}
 	}
 	
